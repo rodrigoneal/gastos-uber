@@ -1,0 +1,15 @@
+[project]
+name = "gastos-uber"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "beautifulsoup4>=4.14.3",
+    "curlconverter>=1.0.1",
+    "httpx>=0.28.1",
+    "loguru>=0.7.3",
+    "openpyxl>=3.1.5",
+    "pandas>=3.0.1",
+    "pydantic>=2.12.5",
+]
