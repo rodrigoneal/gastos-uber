@@ -5,6 +5,8 @@ from pydantic import AfterValidator, BaseModel, field_validator
 from decimal import Decimal
 import re
 
+from dateutil.parser import parse as parse_date
+
 from app.enum.rider import RiderStatus
 
 
@@ -25,23 +27,8 @@ MESES = {
 
 
 def parse_data_uber(data_str: str) -> datetime:
-    # "27 de mar. • 19:11"
-    parte_data, parte_hora = data_str.split(" • ")
-
-    dia, _, mes_str = parte_data.split(" ")
-    mes_str = mes_str.replace(".", "")
-
-    hora, minuto = parte_hora.split(":")
-
-    ano = datetime.now().year  # assume ano atual
-
-    return datetime(
-        year=ano,
-        month=MESES[mes_str],
-        day=int(dia),
-        hour=int(hora),
-        minute=int(minuto),
-    )
+    data_str = data_str.replace("•", "").strip()
+    return parse_date(data_str)
 
 
 class UberTrip(BaseModel):
@@ -56,7 +43,7 @@ class UberTrip(BaseModel):
     @classmethod
     def parse_valor(cls, v):
         if isinstance(v, str):
-            match = re.search(r"R\$(\d+,\d+)", v)
+            match = re.search(r"R\$(\d+.\d+)", v)
             if match:
                 return Decimal(match.group(1).replace(",", "."))
         return v

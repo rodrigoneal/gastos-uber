@@ -128,3 +128,4 @@ class UberClient:
         except TypeError:
             return None
         return ReceiptBreakdown(**raw)
+
